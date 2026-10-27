@@ -1,0 +1,29 @@
+# Release della skill: al push di un tag "vX.Y.Z" crea starter-theme-skill.zip (cartella starter-theme/ con SKILL.md) e lo allega alla release.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: La skill deve avere SKILL.md
+        run: test -f starter-theme/SKILL.md
+
+      - name: Crea lo zip
+        run: |
+          mkdir -p dist-zip
+          zip -qr dist-zip/starter-theme-skill.zip starter-theme -x '*.DS_Store'
+
+      - name: Pubblica la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist-zip/starter-theme-skill.zip --title "Starter Theme Skill ${GITHUB_REF_NAME#v}" --generate-notes
