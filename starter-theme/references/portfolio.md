@@ -32,7 +32,11 @@ Opzioni in **Personalizza → Opzioni → Portfolio** con prefisso `starter_port
 
 Schede: **Layout** (visualizzazione *classica* / *masonry* / *a blocchi* / *sfalsata*, colonne 2–5 con tablet e mobile, distanza orizzontale/verticale in px, proporzione, quarto elemento, per pagina, video all'hover), **Titolo** (animazione logo, ordine riassunto/cliente, tag HTML, dimensione, posizione, colori, hover), **Categorie** (testo con simbolo / tab sotto / tab sopra / nessuna, forma, piene/vuote, simbolo e colore, posizione, margini `mt*`/`mb*`, maiuscolo), **Filtri** (stili *linea* [Classica], *testo grande*, *pillole*, *frase*; colori; conteggi; stessa pagina con fetch-and-swap `initProjectFilters()` oppure ricarica), **Animazioni** (passaggio verso il progetto). Griglie: `starter_portfolio_grid_html()`. Il numero progressivo sulle card non esiste più.
 
-## Animazione logo sulle card
+## Stile delle card (logo o classica)
+
+Negli "Altri progetti" l'opzione `starter_portfolio_rel_stile_card` sceglie `logo` (animazione logo, sotto) o `classica` (riassunto e nome del cliente sotto l'immagine, con ordine `ordine_titoli`, tag e dimensione di ciascuno). `starter_portfolio_related_get( 'animazione_logo' )` legge ancora la vecchia opzione come ripiego.
+
+### Animazione logo
 
 `starter_portfolio_reveal_html()`: al centro dell'immagine il logo del cliente; al passaggio del mouse sparisce e il **titolo del progetto scorre da destra a sinistra (senso di lettura), sempre in MAIUSCOLO** (nessuna opzione per il minuscolo). Il logo è un `<span>` con maschera CSS nel colore di sfondo del sito (o un colore scelto); **funziona anche con gli SVG**: se la Libreria media non ha le dimensioni, `starter_portfolio_logo_ratio()` le legge dal file (width/height o viewBox) e le salva in `_starter_logo_ratio`. Se il logo non è tinto è un `<img class="project-card__logo">`: la regola `.project-card__media .project-card__reveal img.project-card__logo` lo protegge da `.project-card__media img` (riempire, ritagliare, ingrandire, posizionarsi) così si vede sempre intero. Marquee: `@keyframes project-marquee` da `translateX(0)` a `-50%`.
 
