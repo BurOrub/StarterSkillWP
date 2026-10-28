@@ -23,7 +23,7 @@ Questa skill dice **come è fatto**, **dove si lavora** e **le regole da non rom
 
 1. **Capisci dove sei.** Individua la cartella del tema (`wp-content/themes/<nome>`), l'URL locale e come lanciare PHP/WP-CLI su quel sito (vedi `references/test-build-deploy.md`). Non assumere percorsi: chiedili o ricavali.
 2. **Un tema, una cartella di lavoro.** Se esistono più copie del tema (sorgente + copia attiva), lavora su una sola e dì all'utente quale. Non modificare mai progetti reali di cui il tema è solo "fonte di ispirazione": si leggono e basta.
-3. **Leggi prima di scrivere.** Cerca in `CSS/starter.css`, `inc/` e `template-parts/` se esiste già una classe, una funzione o un blocco che fa quello che serve. Il tema ha già helper per quasi tutto (titoli di sezione, pulsanti con animazione "flip", link ACF, icone, breadcrumb).
+3. **Leggi prima di scrivere.** Cerca in `CSS/starter.css`, `inc/` e `template-parts/` se esiste già una classe, una funzione o un blocco che fa quello che serve. Il tema ha già helper per quasi tutto (titoli di sezione, pulsanti con animazione "flip", link, icone, breadcrumb).
 4. **Ogni cosa nuova rispetta le regole** qui sotto e in `references/regole-e-css.md`.
 
 ## Le regole che non si rompono
@@ -42,7 +42,7 @@ Questa skill dice **come è fatto**, **dove si lavora** e **le regole da non rom
 
 - **CSS nuovo**: in `CSS/starter.css`, vicino a componenti simili. Verifica il prefisso della classe rispetto ai bucket di `tools/build.js` (vedi `references/architettura.md`): una classe globale che comincia con un prefisso di bucket finisce in un foglio non caricato ovunque.
 - **Responsive**: breakpoint usati dal tema: 1180px (menu ridotto), 1099/1023px, 899px, 782px (footer a colonna), 639/600px, 480px (una colonna per prodotti e card a icone), 420px. Controlla sempre a 390px (mobile) e 1280px (desktop).
-- **Nuovo blocco**: cartella in `blocks/<nome>/` del plugin Starter Blocks (o `blocks/` del tema figlio) con `block.json`, `fields.json` e `render.php` che legge con `starter_bf()`; il pannello lo disegna il plugin (vedi `references/blocchi.md`). **Mai ACF**: non è più usato.
+- **Nuovo blocco**: cartella in `blocks/<nome>/` del plugin Starter Blocks (o `blocks/` del tema figlio) con `block.json`, `fields.json` e `render.php` che legge con `starter_bf()`; il pannello lo disegna il plugin (vedi `references/blocchi.md`).
 - **Nuova opzione**: registrazione in `inc/customizer-extra.php` (o `functions.php`), default accanto all'uso, descrizione di una riga.
 - **Pagine di esempio**: `inc/starter-pages.php` genera Home, Chi siamo, Servizi, Contatti, Credits, Preferiti con i blocchi. Se cambi un blocco, aggiorna anche il generatore e la mappa chiavi `starter_pg_keys()`.
 - **Verifica visiva**: screenshot con Chrome headless a 1280px e 390px, anche dell'**editor a blocchi** (lì i blocchi si rompono più facilmente), vedi `references/test-build-deploy.md`.

@@ -1,6 +1,6 @@
 # Portfolio (modulo CPT)
 
-Modulo acceso da **Opzioni → Moduli (CPT) → Portfolio** (`inc/modules.php`; spento = `inc/portfolio.php` non viene caricato). CPT `portfolio` **senza archivio**, tassonomia `portfolio_category` (le categorie sono anche i "Servizi" mostrati nella scheda). L'elenco è il blocco `progetti` messo in una pagina normale. File principali: `inc/portfolio.php` (tutto: CPT, campi ACF, helper, Customizer, demo), `single-portfolio.php`, `template-parts/portfolio/project-head.php`, `template-parts/portfolio/card.php`, `template-parts/progetti/`, `template-parts/progetto-{testo,media,crediti,testata}/`.
+Modulo acceso da **Opzioni → Moduli (CPT) → Portfolio** (`inc/modules.php`; spento = `inc/portfolio.php` non viene caricato). CPT `portfolio` **senza archivio**, tassonomia `portfolio_category` (le categorie sono anche i "Servizi" mostrati nella scheda). L'elenco è il blocco `progetti` messo in una pagina normale. File principali: `inc/portfolio.php` (tutto: CPT, helper, Customizer, demo), `single-portfolio.php`, `template-parts/portfolio/project-head.php`, `template-parts/portfolio/card.php`, `template-parts/progetti/`, `template-parts/progetto-{testo,media,crediti,testata}/`.
 
 ## Scheda del progetto
 
@@ -26,7 +26,7 @@ Modulo acceso da **Opzioni → Moduli (CPT) → Portfolio** (`inc/modules.php`; 
 
 Opzioni in **Personalizza → Opzioni → Portfolio** con prefisso `starter_portfolio_rel_*` (stessi nomi e valori dei campi del blocco, tranne il layout, sempre 3 colonne): categorie, riassunto/cliente (tag, dimensione, colori, hover, posizione), proporzione immagini (16:9, 3:2, 4:3, 1:1, 4:5), animazione logo, logo colore sfondo, video all'hover. Predefiniti: categorie tab sopra, riassunto H3, cliente H4, 4:3. Il riassunto non sta mai sopra l'immagine in questa sezione.
 
-**Un'unica funzione legge le opzioni delle card**: `starter_portfolio_card_config( $get )` (`$get` = `'starter_bf'` per il blocco, `'starter_portfolio_related_get'` per i correlati) restituisce `cats`, `cats_opts`, `titles`, `video`, `reveal`, `style`. Una nuova opzione delle card va aggiunta lì, nel campo ACF del blocco e nel Customizer (`starter_portfolio_related_defaults()`).
+**Un'unica funzione legge le opzioni delle card**: `starter_portfolio_card_config( $get )` (`$get` = `'starter_bf'` per il blocco, `'starter_portfolio_related_get'` per i correlati) restituisce `cats`, `cats_opts`, `titles`, `video`, `reveal`, `style`. Una nuova opzione delle card va aggiunta lì, nel campo del blocco (`blocks/progetti/fields.json`) e nel Customizer (`starter_portfolio_related_defaults()`).
 
 ## Blocco "Elenco progetti" (`progetti`)
 
@@ -46,7 +46,7 @@ Un velo disegnato su `<html>` (`html[class*="pt-"]::before/::after`, in `CSS/sta
 
 ## Starter Live (plugin) sulla scheda
 
-`starter_live_meta_post_types` include `portfolio`; la testata passa da `apply_filters( 'starter_live_post_html', … )` in `single-portfolio.php`. Modificabili dal frontend: titolo, riassunto (`post_excerpt`), testo sotto il titolo (marcatore `acfnum`), link e nomi delle agenzie, link al progetto, e i blocchi `progetto-*` (compresi i crediti). Non si aggiungono/tolgono righe del ripetitore e non si cambia il Tipo Agenzia/Partner (si usa l'amministrazione).
+`starter_live_meta_post_types` include `portfolio`; la testata passa da `apply_filters( 'starter_live_post_html', … )` in `single-portfolio.php`. Modificabili dal frontend: titolo, riassunto (`post_excerpt`), testo sotto il titolo (marcatore `fieldnum`), link e nomi delle agenzie, link al progetto, e i blocchi `progetto-*` (compresi i crediti). Non si aggiungono/tolgono righe del ripetitore e non si cambia il Tipo Agenzia/Partner (si usa l'amministrazione).
 
 ## Clona (`inc/duplicate.php`)
 
