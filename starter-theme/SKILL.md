@@ -1,6 +1,6 @@
 ---
 name: starter-theme
-description: Lavorare sul tema WordPress classico "Starter Theme" (prefisso starter_, text domain slug-theme): modificare CSS/PHP/JS, creare o cambiare blocchi ACF, opzioni del Customizer, header/footer/blog/shop WooCommerce, pagine di esempio, moduli Contact Form 7, build, test e messa online. Usala ogni volta che si apre un progetto basato su questo tema, quando si nominano Starter Theme, starter.css, template-parts, inc/starter-pages.php, "Opzioni" del tema o blocchi come hero-slider, hero-video, sezione-voci, testo-affiancato, oppure il Portfolio (progetti, transizioni tra pagine, preloader, Altri progetti, Clona).
+description: Lavorare sul tema WordPress classico "Starter Theme" (prefisso starter_, text domain slug-theme): modificare CSS/PHP/JS, creare o cambiare blocchi (plugin Starter Blocks, in React), opzioni del Customizer, header/footer/blog/shop WooCommerce, pagine di esempio, moduli Contact Form 7, build, test e messa online. Usala ogni volta che si apre un progetto basato su questo tema, quando si nominano Starter Theme, starter.css, template-parts, inc/starter-pages.php, "Opzioni" del tema o blocchi come hero-slider, hero-video, sezione-voci, testo-affiancato, oppure il Portfolio (progetti, transizioni tra pagine, preloader, Altri progetti, Clona).
 ---
 
 # Starter Theme: come lavorarci
@@ -14,7 +14,7 @@ Questa skill dice **come è fatto**, **dove si lavora** e **le regole da non rom
 | `references/architettura.md` | Mappa dei file del tema, funzioni chiave, bucket CSS, variabili CSS |
 | `references/opzioni.md` | Struttura del Customizer e come aggiungere un'opzione |
 | `references/portfolio.md` | Modulo Portfolio: scheda progetto, correlati, blocco Elenco progetti, animazione logo, transizioni e caricamento, Clona, Starter Live |
-| `references/blocchi.md` | Blocchi ACF disponibili, campi, come crearne uno nuovo, regole SEO dei titoli |
+| `references/blocchi.md` | Blocchi disponibili (plugin Starter Blocks), campi, come crearne uno nuovo, regole SEO dei titoli |
 | `references/regole-e-css.md` | Regole di stile (font, colori, animazioni, responsive), trappole CSS già incontrate |
 | `references/contenuti-shop-form.md` | Pagine di esempio, menu, WooCommerce, Contact Form 7, Flamingo, CookieYes |
 | `references/test-build-deploy.md` | Build, test in locale, controllo dell'editor, messa online e sincronizzazione |
@@ -42,7 +42,7 @@ Questa skill dice **come è fatto**, **dove si lavora** e **le regole da non rom
 
 - **CSS nuovo**: in `CSS/starter.css`, vicino a componenti simili. Verifica il prefisso della classe rispetto ai bucket di `tools/build.js` (vedi `references/architettura.md`): una classe globale che comincia con un prefisso di bucket finisce in un foglio non caricato ovunque.
 - **Responsive**: breakpoint usati dal tema: 1180px (menu ridotto), 1099/1023px, 899px, 782px (footer a colonna), 639/600px, 480px (una colonna per prodotti e card a icone), 420px. Controlla sempre a 390px (mobile) e 1280px (desktop).
-- **Nuovo blocco**: duplica `template-parts/example-block`, `block.json` + `render.php`, campi ACF in `inc/acf-blocks-extra.php` (vedi `references/blocchi.md`). Si registra da solo.
+- **Nuovo blocco**: cartella in `blocks/<nome>/` del plugin Starter Blocks (o `blocks/` del tema figlio) con `block.json`, `fields.json` e `render.php` che legge con `starter_bf()`; il pannello lo disegna il plugin (vedi `references/blocchi.md`). **Mai ACF**: non è più usato.
 - **Nuova opzione**: registrazione in `inc/customizer-extra.php` (o `functions.php`), default accanto all'uso, descrizione di una riga.
 - **Pagine di esempio**: `inc/starter-pages.php` genera Home, Chi siamo, Servizi, Contatti, Credits, Preferiti con i blocchi. Se cambi un blocco, aggiorna anche il generatore e la mappa chiavi `starter_pg_keys()`.
 - **Verifica visiva**: screenshot con Chrome headless a 1280px e 390px, anche dell'**editor a blocchi** (lì i blocchi si rompono più facilmente), vedi `references/test-build-deploy.md`.

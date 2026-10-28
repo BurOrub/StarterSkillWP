@@ -44,7 +44,7 @@ Un solo stile per tutti: `CSS/filters.css` + `initFilters()` in `JS/scripts.js` 
 ## Pulsanti
 Le varianti di pulsante (Pieno 1/2, Contorno 1/2) si scelgono in Opzioni → Pulsanti e arrivano al CSS come variabili `--b-*` (vedi CSS/starter.css vicino a `.button`). Nel markup si usano le classi `.button`, `.button--outline`, `.button--fill-2`, `.button--outline-2` (in Gutenberg gli stili del blocco Pulsante): mai colori scritti a mano sul singolo pulsante.
 
-Pulsanti nei blocchi ACF: aggiungere il link in `starter_button_link_fields()` (inc/acf-blocks.php), così compare il menu "Stile del pulsante", e nel render usare `starter_button_class( get_field( 'nome_stile' ), 'classi predefinite' )`. Fuori dai blocchi: principale = `.button` (Pieno 1), secondario = `.button--outline` (Contorno 1). Angoli: Opzioni → Generale → Bordi del sito cambia le variabili `--radius-*`; mai raggi fissi nei blocchi.
+Pulsanti nei blocchi: dopo il campo link aggiungere in `fields.json` il campo stile (`key` che inizia con `field_btn_`, `name` = nome del link + `_stile`), così compare il menu "Stile del pulsante", e nel render usare `starter_button_class( starter_bf( 'nome_stile' ), 'classi predefinite' )`. Fuori dai blocchi: principale = `.button` (Pieno 1), secondario = `.button--outline` (Contorno 1). Angoli: Opzioni → Generale → Bordi del sito cambia le variabili `--radius-*`; mai raggi fissi nei blocchi.
 
 ## Bordi e angoli (regola del tema)
 
@@ -57,5 +57,5 @@ Tutto ciò che ha gli angoli arrotondati segue **Opzioni → Generale → Bordi 
 15. **SVG nella Libreria media senza dimensioni** (`width/height` = 0): non si può calcolare la proporzione dal metadato; leggere `width/height` o `viewBox` dal file (`starter_portfolio_logo_ratio()`).
 16. **Il velo di transizione sta su `<html>`** (classi `pt-*`): ogni script che esce presto nella pagina di arrivo salta anche la registrazione del clic. Mai `return` prima di aver registrato gli eventi.
 17. **Tabelle di dati su telefono**: una griglia a 2 colonne (`.project-meta`) va portata a 1 colonna sotto i 640px, altrimenti il testo si schiaccia.
-18. **ACF in tabella**: dentro un ripetitore con `layout: table` le larghezze `wrapper.width` dei sotto-campi non valgono.
+18. **Ripetitori**: ogni riga si apre da sola e mostra i campi su due colonne; i campi lunghi (area di testo, galleria, ripetitore) occupano tutta la riga.
 19. **Un video che scarica in background blocca la navigazione (solo online)**: il video all'hover di una card, ancora in download al clic, può far arrivare la pagina successiva dopo decine di secondi quando il sito è dietro un CDN. In locale non succede e quindi sfugge: i test di navigazione vanno rifatti anche sul sito online e le sorgenti dei video liberate al clic.

@@ -9,7 +9,7 @@ starter-theme/
 ├── header.php / footer.php   footer.php è un loader: legge starter_footer_style e carica template-parts/footer/footer-style-N.php
 ├── index.php, home.php (pagina blog), archive.php, search.php, single.php, page.php, 404.php, sidebar-blog.php
 ├── inc/modules.php           Moduli (CPT): registro starter_modules(), interruttori in Personalizza, pagina del modulo, caricamento solo se acceso
-├── inc/modules/immobili/     Modulo Immobili: CPT, tassonomie, helper, filtri, PDF (dompdf/), acf-json/, templates/single-immobile.php, sample/
+├── inc/modules/immobili/     Modulo Immobili: CPT, tassonomie, helper, filtri, PDF (dompdf/), templates/single-immobile.php, sample/
 ├── single-portfolio.php      Scheda progetto (inc/portfolio.php; testata in template-parts/portfolio/project-head.php; card in template-parts/portfolio/card.php; elenco = blocco template-parts/progetti, nessun archivio). Vedi references/portfolio.md
 ├── theme.json                Palette e scala testi per l'editor (clamp, compreso XXL), sincronizzata dalle opzioni
 ├── CSS/
@@ -20,14 +20,12 @@ starter-theme/
 │   └── dist/                 Output di npm run build (base, blog, blocks, portfolio, shop, filters, immobili + manifest.json)
 ├── JS/                       scripts.js (frontend: filtri, slider, transizioni tra progetti, caricamento delle pagine), animations.js (solo Lenis, se attivo), customize-controls.js (solo admin)
 ├── inc/
-│   ├── acf-blocks.php        Campi ACF dei blocchi "base"
-│   ├── acf-blocks-extra.php  Campi ACF di hero-slider/video, striscia valori, ultimi articoli, prodotti, instagram, team, contatti…
-│   ├── acf-options.php       Opzioni ACF (poche)
+│   ├── block-options.php     Sfondo della sezione e classi personalizzate (filtro render_block) per tutti i blocchi
+│   ├── whatsapp.php          Pulsante WhatsApp fisso
 │   ├── block-helpers.php     Helper dei blocchi: starter_field, starter_link_attrs, starter_flip_text, starter_section_heading_tags,
 │   │                         starter_block_head, starter_page_header (+ _titles), starter_block_center_link, starter_page_breadcrumb…
 │   ├── icons.php             Icone SVG: starter_icon() legge le icone del tema + la libreria completa; endpoint REST starter/v1/icons (selettori)
 │   ├── icons-data/           Libreria generata da tools/build-icons.js: ~1.900 icone Lucide (ISC) a blocchi per lettera + 90 loghi (Simple Icons CC0 + LinkedIn, Amazon, Slack, Skype da Bootstrap Icons MIT; "brand-nome") + index.json (ricerca IT/EN)
-│   ├── acf-field-icon.php    Tipo di campo ACF "Icona (libreria Starter)": finestra con ricerca (JS/icon-picker.js, CSS/icon-picker.css). Valore = nome icona
 │   ├── header.php            Opzioni e markup condiviso dell'header (stile icone, ordine, logo allo scroll, WPML)
 │   ├── search.php            Ricerca nell'header (REST /wp-json/starter/v1/search + pannello)
 │   ├── menu.php              Pulsanti dei sottomenu, titoli colonne footer
@@ -44,13 +42,13 @@ starter-theme/
 │   ├── media-optimizer.php   Media → Ottimizza immagini (AVIF mancanti, JPG/PNG → WebP), WP-CLI `starter media`
 │   ├── assets-optimizer.php  Unione CSS/JS consecutivi in uploads/starter-cache + minificazione HTML (ob_start su template_redirect)
 │   ├── woocommerce.php, wishlist.php, shop-filters.php, shop-setup.php   Shop
-├── template-parts/           Un blocco ACF per cartella (block.json + render.php), più content/, blog/, footer/
+├── template-parts/           Parti di template (content/, blog/, footer/, portfolio/); i blocchi sono nel plugin Starter Blocks
 └── woocommerce/              archive-product.php, content-product.php (card)
 ```
 
 ## Funzioni chiave
 
-- `starter_theme_register_acf_blocks()` registra ogni `template-parts/*/block.json`.
+- I blocchi li registra il plugin Starter Blocks (`inc/engine.php`): una cartella per blocco in `blocks/`, anche dal tema figlio.
 - `starter_css_buckets()` decide quali bucket CSS caricare per la pagina; `starter_dist_ready()` usa `CSS/dist` solo se più recente dei sorgenti.
 - `starter_colors_css()`, `starter_typography_css()`, `starter_typography_style_css()` generano il CSS delle opzioni Colori, Tipografia e Stile testi (inline sul foglio del tema). Lo stesso CSS è passato **anche all'editor** con il filtro `block_editor_settings_all`.
 - `starter_body_class_has_hero()` aggiunge `has-hero` (header trasparente sopra la hero) se la pagina inizia con una hero.
@@ -78,7 +76,7 @@ I valori reali dipendono dalle opzioni del sito (inline), non dai default del fi
 ## Icone
 
 - Nei render si usa sempre `starter_icon( 'nome', $size, $stroke )`. Le icone di `starter_icon_paths()` (poche, personalizzate) hanno la precedenza su quelle della libreria, così l'aspetto di quelle già usate non cambia.
-- Un campo ACF con scelta dell'icona si definisce con `'type' => 'starter_icon'` (opzione `allow_null` per "nessuna icona"). Il vecchio `select` + `starter_icon_choices()` non serve più.
+- Un campo con scelta dell'icona si definisce in `fields.json` con `"type": "starter_icon"` (selettore con ricerca nell'editor, libreria dall'endpoint REST starter/v1/icons).
 - I loghi (`brand-instagram`, `brand-facebook`…) sono pieni (`fill`), le altre icone a linea. I loghi arrivano da più librerie: per aggiungerne altri a `brandList` (Simple Icons) o a `fromBootstrap` (Bootstrap Icons) in `tools/build-icons.js`.
 - Aggiornare o ampliare la libreria: `npm i -D lucide-static simple-icons`, poi `node tools/build-icons.js` (per aggiungere loghi: elenco `brandList` nello script).
 

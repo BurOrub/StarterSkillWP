@@ -1,8 +1,8 @@
-# Blocchi ACF del tema (richiedono ACF Pro)
+# Blocchi del tema (plugin Starter Blocks, in React)
 
-Categoria "Starter" nell'inserimento blocchi. Ogni blocco è una cartella in `template-parts/<nome>/` con `block.json` + `render.php`; i campi sono registrati da codice con `acf_add_local_field_group()` in `inc/acf-blocks.php` e `inc/acf-blocks-extra.php` (niente `acf-json/`). Il blocco compare nel contenuto come `<!-- wp:starter-theme/<nome> {"name":…,"data":{campo:valore,"_campo":"field_key"}} /-->`.
+Categoria "Starter" nell'inserimento blocchi. I blocchi non stanno più nel tema né usano ACF: sono nel plugin **Starter Blocks** (`wp-content/plugins/starter-blocks/`), una cartella per blocco in `blocks/<nome>/` con `block.json`, `fields.json` (elenco dei campi) e `render.php`. Un solo componente React (`src/engine.jsx`) disegna il pannello di ogni blocco dai suoi `fields.json`: matita nella barra del blocco → finestra con schede, ripetitori, foto, gallerie, link, icone; "Avanzate" anche nella colonna a destra. Il blocco compare nel contenuto come `<!-- wp:starter-theme/<nome> {"name":…,"data":{campo:valore,"_campo":"field_key"}} /-->` (stesso formato di ACF, quindi i contenuti vecchi si leggono senza conversioni). Il tema figlio può avere i suoi in `blocks/`.
 
-## Elenco e campi (`name` dei campi ACF)
+## Elenco e campi (`name` dei campi)
 
 | Blocco | Campi |
 |---|---|
@@ -44,13 +44,14 @@ Categoria "Starter" nell'inserimento blocchi. Ogni blocco è una cartella in `te
 
 ## Creare un nuovo blocco
 
-1. Duplica `template-parts/example-block` → `template-parts/mio-blocco`; in `block.json` cambia `name` (`starter-theme/mio-blocco`), titolo, icona, keywords.
-2. In `render.php`: leggi i campi con `get_field()` (o `starter_field()`), esci con `starter_block_placeholder( ! empty( $is_preview ), 'messaggio' )` se mancano i dati, prendi i tag dei titoli da `starter_section_heading_tags()`, ottieni i pulsanti con `starter_link_attrs()` + `starter_flip_text()`.
-3. Campi: nuovo `acf_add_local_field_group` in `inc/acf-blocks-extra.php` con `'location' => starter_extra_block_location( 'mio-blocco' )`. Per titolo/testo/link ripetuti usa `starter_extra_head_fields( 'prefisso' )` (include l'occhiello).
-4. Mappa chiavi per le pagine di esempio: aggiungi il blocco a `starter_pg_keys()` in `inc/starter-pages.php` (nome campo → `field_…`), altrimenti i dati non vengono scritti nei blocchi generati.
-5. CSS in `starter.css` con un prefisso di classe già previsto dai bucket (o aggiungi il prefisso in `tools/build.js`). `npm run build`.
-6. Se il blocco è una hero che deve rendere trasparente l'header, aggiorna `starter_body_class_has_hero()` (nel tema: vale solo se il blocco è il primo della pagina).
-7. **Controlla l'anteprima nell'editor** (`CSS/gutenberg.css` e variabili passate all'editor): se usa componenti dello shop serve `CSS/shop.css` (già in `add_editor_style`).
+1. Cartella `blocks/mio-blocco/` nel plugin (o nel tema figlio). `block.json`: `name` (`starter-theme/mio-blocco`), titolo, icona, keywords, `supports`.
+2. `fields.json`: elenco dei campi. Tipi: `text`, `textarea`, `number`, `select`, `button_group`, `true_false`, `link`, `image`, `file`, `gallery`, `starter_icon`, `repeater` (anche annidato), `taxonomy`, `relationship`, `url`, `email`, `wysiwyg` (area di testo con HTML), `message`, `tab` (schede). Ogni campo: `key` (unica, `field_…`), `name`, `label`, e se serve `choices`, `default_value`, `return_format`, `conditional_logic` ([[{field: key, operator: '==', value}]], gruppi esterni = OR, regole interne = AND). Per i pulsanti il campo stile ha chiave `field_btn_…` (scelte lette dal tema); `sfondo_sezione` e `classi_custom` in una scheda "Avanzate" in fondo. Blocco con testo libero dentro: `"starterInner": {"template": [...]}` in `block.json` e `$content` nel render.
+3. `render.php`: campi con `starter_bf( 'nome' )` (non `get_field`); un campo mai salvato vale `null`, come in ACF: non trattarlo come stringa vuota senza controllare. Esci con `starter_block_placeholder( ! empty( $is_preview ), 'messaggio' )` se mancano i dati; tag dei titoli da `starter_section_heading_tags()`, pulsanti con `starter_link_attrs()` + `starter_flip_text()`. Disponibili `$block` (array con `id`), `$content`, `$is_preview`.
+4. Pagine di esempio: aggiungi il blocco a `starter_pg_keys()` in `inc/starter-pages.php`.
+5. CSS in `starter.css` con un prefisso già previsto dai bucket (o aggiungi il prefisso in `tools/build.js`). `npm run build`. Il plugin si ricompila con `sh build.sh` (esbuild del tema); `build/` va committato.
+6. Hero che rende trasparente l'header: aggiorna `starter_body_class_has_hero()`.
+7. **Verifica sempre**: (a) HTML del blocco su una pagina reale (confronto prima/dopo, ignorando id casuali); (b) nell'editor la matita apre la finestra e ogni interruttore/scelta mostra solo i campi giusti e nasconde gli altri (le `conditional_logic` funzionano: l'ha sempre fatto ACF, non devono regredire); (c) spazi: ogni campo ha 8–16px sopra e sotto, nessun campo attaccato al bordo del suo riquadro; (d) anteprima nell'editor (`CSS/gutenberg.css`).
+8. **Campi di un tipo di contenuto** (Portfolio, Immobile, termini): JSON in `meta/<nome>.json` (`object`: `post_type` o `taxonomy`, `name`, `title`, `fields`). Riquadro nella schermata di modifica, meta con gli stessi nomi di ACF; nel tema si legge con `starter_field( 'nome', $id )` (`'term_12'` per i termini). Valori iniziali di un contenuto nuovo: filtro `starter_meta_initial`; valore in uscita: `starter_meta_value`.
 
 ## Pulsanti dei blocchi
 

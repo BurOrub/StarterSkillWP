@@ -13,7 +13,7 @@ Modulo acceso da **Opzioni → Moduli (CPT) → Portfolio** (`inc/modules.php`; 
 - colonna dati (`.project-meta`, griglia a 2 colonne, **1 colonna sotto i 640px**): *Servizi* (= categorie del progetto, tab `.project-meta__chips`, riga intera), *Agenzia/Agenzie* e *Partner* affiancati, *Visita il progetto* (link testuale con il **dominio** senza www, stesso stile dei nomi agenzia). Nomi in `li.title-h6.project-meta__name` (misura "small" 15px, 4px tra i nomi, nessun sottolineato).
 - **Il nome del cliente è il titolo del progetto** (non esiste più un campo "Cliente"): `starter_portfolio_client_name()`.
 
-**Campi ACF** (gruppo "Progetto", `group_starter_portfolio_details`, due schede):
+**Campi** (plugin Starter Blocks, `meta/portfolio.json`, gruppo "Progetto", due schede):
 - *Dettagli del progetto*: riga con logo del cliente · copertina a tutto schermo · link al progetto online · video di copertina; poi *Testo sotto il titolo*; poi ripetitore *Agenzia di comunicazione o partner* (tipo Agenzia/Partner + campo link "nome e link"; le righe senza tipo sono agenzie).
 - *Progetti correlati*: campo `progetto_correlati` (max 3). Il resto fino a 3 = gli ultimi per data, mai il progetto stesso, mai doppioni (`starter_portfolio_related()`).
 - Nomi meta: `progetto_logo`, `progetto_copertina_full`, `progetto_link`, `progetto_video`, `progetto_testo`, `progetto_agenzie` (sub: `tipo`, `link`), `progetto_correlati`. I vecchi `progetto_cliente`, `progetto_anno`, `progetto_ruoli`, `progetto_output` non sono più letti.
@@ -26,7 +26,7 @@ Modulo acceso da **Opzioni → Moduli (CPT) → Portfolio** (`inc/modules.php`; 
 
 Opzioni in **Personalizza → Opzioni → Portfolio** con prefisso `starter_portfolio_rel_*` (stessi nomi e valori dei campi del blocco, tranne il layout, sempre 3 colonne): categorie, riassunto/cliente (tag, dimensione, colori, hover, posizione), proporzione immagini (16:9, 3:2, 4:3, 1:1, 4:5), animazione logo, logo colore sfondo, video all'hover. Predefiniti: categorie tab sopra, riassunto H3, cliente H4, 4:3. Il riassunto non sta mai sopra l'immagine in questa sezione.
 
-**Un'unica funzione legge le opzioni delle card**: `starter_portfolio_card_config( $get )` (`$get` = `'get_field'` per il blocco, `'starter_portfolio_related_get'` per i correlati) restituisce `cats`, `cats_opts`, `titles`, `video`, `reveal`, `style`. Una nuova opzione delle card va aggiunta lì, nel campo ACF del blocco e nel Customizer (`starter_portfolio_related_defaults()`).
+**Un'unica funzione legge le opzioni delle card**: `starter_portfolio_card_config( $get )` (`$get` = `'starter_bf'` per il blocco, `'starter_portfolio_related_get'` per i correlati) restituisce `cats`, `cats_opts`, `titles`, `video`, `reveal`, `style`. Una nuova opzione delle card va aggiunta lì, nel campo ACF del blocco e nel Customizer (`starter_portfolio_related_defaults()`).
 
 ## Blocco "Elenco progetti" (`progetti`)
 
@@ -46,11 +46,11 @@ Un velo disegnato su `<html>` (`html[class*="pt-"]::before/::after`, in `CSS/sta
 
 ## Starter Live (plugin) sulla scheda
 
-`starter_live_acf_post_types` include `portfolio`; la testata passa da `apply_filters( 'starter_live_post_html', … )` in `single-portfolio.php`. Modificabili dal frontend: titolo, riassunto (`post_excerpt`), testo sotto il titolo (marcatore `acfnum`), link e nomi delle agenzie, link al progetto, e i blocchi `progetto-*` (compresi i crediti). Non si aggiungono/tolgono righe del ripetitore e non si cambia il Tipo Agenzia/Partner (si usa l'amministrazione).
+`starter_live_meta_post_types` include `portfolio`; la testata passa da `apply_filters( 'starter_live_post_html', … )` in `single-portfolio.php`. Modificabili dal frontend: titolo, riassunto (`post_excerpt`), testo sotto il titolo (marcatore `acfnum`), link e nomi delle agenzie, link al progetto, e i blocchi `progetto-*` (compresi i crediti). Non si aggiungono/tolgono righe del ripetitore e non si cambia il Tipo Agenzia/Partner (si usa l'amministrazione).
 
 ## Clona (`inc/duplicate.php`)
 
-Voce **Clona** nelle azioni di riga (dopo Visualizza) di pagine, articoli e CPT: crea una bozza identica (titolo, contenuto, estratto, campi ACF, immagine in evidenza, categorie, genitore), senza slug. Esclusi allegati e prodotti WooCommerce. Nonce + `edit_post` + `create_posts`. Filtro `starter_clone_post_types`.
+Voce **Clona** nelle azioni di riga (dopo Visualizza) di pagine, articoli e CPT: crea una bozza identica (titolo, contenuto, estratto, campi, immagine in evidenza, categorie, genitore), senza slug. Esclusi allegati e prodotti WooCommerce. Nonce + `edit_post` + `create_posts`. Filtro `starter_clone_post_types`.
 
 ## Menu e pagine di prova
 
