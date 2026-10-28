@@ -1,6 +1,6 @@
 ---
 name: starter-theme
-description: Lavorare sul tema WordPress classico "Starter Theme" (prefisso starter_, text domain slug-theme): modificare CSS/PHP/JS, creare o cambiare blocchi (plugin Starter Blocks, in React), opzioni del Customizer, header/footer/blog/shop WooCommerce, pagine di esempio, moduli Contact Form 7, build, test e messa online. Usala ogni volta che si apre un progetto basato su questo tema, quando si nominano Starter Theme, starter.css, template-parts, inc/starter-pages.php, "Opzioni" del tema o blocchi come hero-slider, hero-video, sezione-voci, testo-affiancato, oppure il Portfolio (progetti, transizioni tra pagine, preloader, Altri progetti, Clona).
+description: Lavorare sul tema WordPress classico "Starter Theme" (prefisso starter_, text domain slug-theme): modificare CSS/PHP/JS, creare o cambiare blocchi (plugin Starter Blocks, in React), opzioni del Customizer, header/footer/blog/shop WooCommerce, pagine di esempio, moduli Contact Form 7, build, test e messa online. Usala ogni volta che si apre un progetto basato su questo tema, e all'inizio di un nuovo sito (intervista e configurazione), quando si nominano Starter Theme, starter.css, template-parts, inc/starter-pages.php, "Opzioni" del tema o blocchi come hero-slider, hero-video, sezione-voci, testo-affiancato, oppure il Portfolio (progetti, transizioni tra pagine, preloader, Altri progetti, Clona).
 ---
 
 # Starter Theme: come lavorarci
@@ -17,7 +17,12 @@ Questa skill dice **come è fatto**, **dove si lavora** e **le regole da non rom
 | `references/blocchi.md` | Blocchi disponibili (plugin Starter Blocks), campi, come crearne uno nuovo, regole SEO dei titoli |
 | `references/regole-e-css.md` | Regole di stile (font, colori, animazioni, responsive), trappole CSS già incontrate |
 | `references/contenuti-shop-form.md` | Pagine di esempio, menu, WooCommerce, Contact Form 7, Flamingo, CookieYes |
+| `references/nuovo-progetto.md` | **Nuovo sito**: intervista (style guide, domande a gruppi) e configurazione delle opzioni con `scripts/applica-profilo.php` |
 | `references/test-build-deploy.md` | Build, test in locale, controllo dell'editor, messa online e sincronizzazione |
+
+## Quando l'utente inizia un progetto nuovo
+
+Se dice che parte un sito nuovo (tema appena installato, opzioni di fabbrica), **non iniziare a configurare a caso**: segui `references/nuovo-progetto.md`. In breve: consiglia di creare una style guide (Claude Design o altro) e chiedi link o file HTML; ricavane una proposta; fai domande a gruppi su tutte le opzioni del tema (risposte chiuse + "altro" + "lo faccio io"); prova con `prova`, applica solo dopo il suo ok e scarica i Google Fonts. **Logo, foto, testi, pagine e menu li carica l'utente: non chiederli.** Vale solo per i progetti nuovi.
 
 ## Prima di toccare qualunque cosa
 
