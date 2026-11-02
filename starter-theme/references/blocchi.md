@@ -9,7 +9,7 @@ Categoria "Starter" nell'inserimento blocchi. I blocchi sono nel plugin **Starte
 | `intestazione-pagina` | occhiello, titolo (H1; `<em>` per il corsivo colorato), testo, **posizione_testo** (`sotto` default / `destra`) |
 | `hero-media` (Hero con foto e video) | occhiello, titolo, testo, cta_primaria, cta_secondaria, clienti (foto), clienti_testo, foto, etichetta_foto + colore, video, copertina_video, etichetta_video + colore |
 | `hero-split` | occhiello, titolo, testo, cta_primaria, cta_secondaria, foto, lato_foto |
-| `hero-slider` | immagini (1–6), occhiello, titolo, testo, link, **link_2** (secondo pulsante facoltativo), durata |
+| `hero-slider` | immagini (1–6, **foto o video**: un solo elemento = nessuna animazione, un video singolo gira in ciclo), occhiello, titolo, testo, link, **link_2** (secondo pulsante facoltativo), durata |
 | `hero-video` | video (mp4/webm), copertina, occhiello, titolo, testo, link, **link_2** |
 | `striscia-valori` | voci (icona, titolo) |
 | `sezione-affiancata` | occhiello, foto (1–2), formato, lato, sfondo + **testo scritto con blocchi Gutenberg** (InnerBlocks) |
@@ -19,7 +19,7 @@ Categoria "Starter" nell'inserimento blocchi. I blocchi sono nel plugin **Starte
 | `slider` | Slider singolo o carosello: gallery di immagini e video mp4/webm (didascalia = quella del file), tipo, larghezza (misura del sito / tutto schermo), immagini visibili desktop/tablet(≤1100)/mobile(≤640), distanza in px, anteprima delle vicine (px), proporzione, frecce (sull'immagine / sopra / sotto) + stile (4 pulsanti), paginazione (puntini / contatore / barra), autoplay, ricomincia, didascalie, angoli. Classi `.slider-block*`, JS `initSliders()` |
 | `missione-visione` (Due riquadri) | voci (occhiello, titolo, testo) |
 | `team` | occhiello, titolo, testo, voci (foto, nome, ruolo, bio) |
-| `progetti` | Elenco dei progetti del Portfolio, con schede **Layout** (classica/masonry/a blocchi/sfalsata/elenco, colonne, distanze, proporzione, quarto elemento, per pagina, video hover), **Titolo** (animazione logo, riassunto/cliente: tag, dimensione, posizione, colori), **Categorie** (testo/tab, forma, colori, margini), **Filtri** (linea/testo grande/pillole/frase, colori, stessa pagina o ricarica), **Animazioni** (passaggio verso il progetto: nessuna/copertina/tendina/dissolvenza). Dettagli in `portfolio.md` |
+| `progetti` | Elenco dei progetti del Portfolio: visualizzazioni `classica` / `masonry` / `blocchi` (3 schemi) / `sfalsata` / `elenco` (3 versioni) / `vetrina` / `slider` (4 versioni) / `carosello` (3 versioni), con schede Layout, Titolo, Categorie, Filtri, Animazioni, Avanzate; i campi si mostrano per visualizzazione. Dettagli in `references/portfolio.md` |
 | `elenco-immobili` (Immobili — Elenco) | occhiello, titolo, testo (intestazione di pagina + filtri e griglia) — modulo Immobili |
 | `immobili-in-evidenza` (Immobili — In evidenza) | occhiello, titolo, testo, link — 3 immobili con Evidenza "In evidenza home" — modulo Immobili |
 | `immobili-hero-home` (Immobili — Hero home) | occhiello, titolo, testo, cta_primaria, cta_secondaria — immobile con Evidenza "Hero home" — modulo Immobili |
@@ -54,6 +54,9 @@ Categoria "Starter" nell'inserimento blocchi. I blocchi sono nel plugin **Starte
 8. **Campi di un tipo di contenuto** (Portfolio, Immobile, termini): JSON in `meta/<nome>.json` (`object`: `post_type` o `taxonomy`, `name`, `title`, `fields`). Riquadro nella schermata di modifica, meta con i nomi dei campi; nel tema si legge con `starter_field( 'nome', $id )` (`'term_12'` per i termini). Valori iniziali di un contenuto nuovo: filtro `starter_meta_initial`; valore in uscita: `starter_meta_value`.
 
 ## Pulsanti dei blocchi
+
+- **Campo `link`**: valore `{title, url, target, icon}`. `icon` assente = freccia predefinita (blocchi vecchi), `''` = nessuna icona, altrimenti il nome nella libreria icone. In render: `starter_link_title( $link )`, `starter_link_attrs()`, `starter_link_icon( $link, $default )` (`inc/block-helpers.php`). Il pannello React mostra testo, indirizzo, apertura e icona; Starter Live ha la stessa finestrella.
+- **Pulsanti nativi di Gutenberg**: attributo `starterIcon` sul blocco `core/button` (plugin: `src/button-icon.jsx`, `inc/button-icon.php`, anteprima in `CSS/gutenberg.css`); Starter Live lo modifica dal sito (`clean_link` con `icon`, `core/button` salva `starterIcon`).
 
 - Tutti i pulsanti sono `.button`: primario `button` (o `button button--light` nella hero), secondario `button button--outline`, su sfondo colorato `button button--on-accent`. Niente più `pill-button`. L'hover riempie dal basso con `--color-accent-cta` e il testo diventa **nero** (`--color-text`). Il testo del pulsante passa da `starter_flip_text()` (effetto "flip").
 - Doppia CTA nelle hero: `link` + `link_2` dentro `.hero-slider__actions` (flex con gap, a capo su mobile). Il secondo compare solo se compilato; su fondo scuro è outline chiaro (`.hero-slider .button--outline`).

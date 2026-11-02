@@ -30,7 +30,36 @@ Opzioni in **Personalizza → Opzioni → Portfolio** con prefisso `starter_port
 
 ## Blocco "Elenco progetti" (`progetti`)
 
-Schede: **Layout** (visualizzazione *classica* / *masonry* / *a blocchi* / *sfalsata* / *elenco* (righe con categoria, nome e dato; hover colora la riga e mostra copertina o video; `template-parts/portfolio/row.php`, CSS `.project-rows*`; versioni `centro` e `sinistra`), colonne 2–5 con tablet e mobile, distanza orizzontale/verticale in px, proporzione, quarto elemento, per pagina, video all'hover), **Titolo** (animazione logo, ordine riassunto/cliente, tag HTML, dimensione, posizione, colori, hover), **Categorie** (testo con simbolo / tab sotto / tab sopra / nessuna, forma, piene/vuote, simbolo e colore, posizione, margini `mt*`/`mb*`, maiuscolo), **Filtri** (stili *linea* [Classica], *testo grande*, *pillole*, *frase*; colori; conteggi; stessa pagina con fetch-and-swap `initProjectFilters()` oppure ricarica), **Animazioni** (passaggio verso il progetto). Griglie: `starter_portfolio_grid_html()`. Il numero progressivo sulle card non esiste più.
+Schede: **Layout**, **Titolo**, **Categorie**, **Filtri**, **Animazioni**, **Avanzate**. File: `plugins/starter-blocks/blocks/progetti/{block.json,fields.json,render.php}`, griglie in `starter_portfolio_grid_html()` / `starter_portfolio_grid_inner()` (`inc/portfolio.php`), card in `template-parts/portfolio/{card,row,slide,panel,showcase}.php`.
+
+### Visualizzazioni (`visualizzazione`) e le loro versioni
+
+| Valore | Template / markup | Note |
+|---|---|---|
+| `classica`, `masonry`, `sfalsata` | `card.php`, `.project-grid`, `.project-stagger` | colonne 2–5 (+ tablet, mobile, **Oltre 1920** `colonne_xl` 2–8), `proporzione` (16-9 … 4-5 e verticali 3-4, 2-3, 9-16), gap x/y |
+| `blocchi` | `.project-blocks` | `blocchi_schema`: `classico` (2 orizzontali + 1 verticale, `quarto_elemento`), `due_una` (2 affiancate + 1 grande), `una_due`; `proporzione` per le affiancate, `proporzione_grande` |
+| `elenco` | `row.php`, `.project-rows*` | `elenco_allineamento`: `centro`, `sinistra` (copertina grande, `elenco_inclinata`), `inline` (copertina in mezzo alle parole del nome, JS `initProjectRows`: rimescola le lettere) |
+| `vetrina` (Anteprima con video) | `showcase.php`, `.project-showcase*` | copertina di sfondo, video del progetto fermo sul primo fotogramma (`#t=0.001`) e in play all'hover (`initProjectShowcase`); nome in alto, categorie a destra, riassunto in basso |
+| `slider` | `slide.php` (sovrapposto, schermo, orizzontale) o `panel.php` (pannello) | `slider_versione`: `sovrapposto` (`.project-stack`, card `sticky`), `schermo` (`.project-fullscreen`, sezioni `sticky` da 100svh), `orizzontale` (`.project-hscreen`, pin + fila orizzontale), `pannello` (`.project-pslider`, frecce, numero, video o copertina); `slider_altezza` (solo sovrapposto), `slider_posizione` (centro / basso sinistra / basso centro) e `slider_posizione_h` (solo orizzontale: basso sinistra o basso centro) |
+| `carosello` | `card.php` | `carosello_versione`: `classico` (scroll-snap, pallini, autoplay `carosello_auto`/`carosello_durata`, **loop** con card clonate in `initProjectCarousels`), `animato` (`.project-carousel--fx`, GSAP: parallasse, inclinazione dalla velocità; **senza loop**), `pagina` (`.project-hcar`: pin GSAP e fila orizzontale; `hcar_proporzione` con la voce `full` = card alte 100svh; testi sopra l'immagine per formati verticali e full) |
+
+### Movimento con GSAP (solo dove serve)
+
+`JS/portfolio-motion.js` (+ `JS/vendor/gsap.min.js` e `JS/vendor/ScrollTrigger.min.js`, versioni in `JS/vendor/vendor.json`) si carica **solo** nelle pagine con slider o carosello animato/pagina: lo chiede `render.php` con `starter_portfolio_motion_assets()` (non nell'anteprima dell'editor). Gli script sono in `defer` (`inc/performance.php`). Regole imparate:
+- **Mai `scroll-snap` CSS sulla pagina**: con lo scroll fluido (Lenis, `window.starterLenis`) la pagina scatta e rimbalza. Il posizionamento si fa con ScrollTrigger (`snap` dentro il pin) oppure con `starterLenis.scrollTo()` (riposizionamento all'80% prima del pin: lo `snap` di ScrollTrigger rimbalza con Lenis). Parte solo dopo un'azione dell'utente (rotella, touch, tasti), mai al caricamento.
+- **Mai animare `filter` con GSAP partendo da `none`** (parte da nero): per scurire si anima l'opacità di un velo (`.project-panel__shade`, `.project-fslide__shade`).
+- Non animare con GSAP un elemento centrato con `transform: translate()` in CSS: si animano i figli (`.project-card__titles > *`).
+- Gli slider orizzontali a pin hanno la scritta "Scorri per sfogliare" (`.project-scrollhint`, solo ≤1100px/touch) mostrata da `makeHint()`.
+- Il verso dello scroll si ricava dallo spostamento rispetto alla sezione di partenza, non dall'ultimo movimento (con Lenis c'è un piccolo rimbalzo all'indietro).
+- `starter_portfolio_page_id()` cerca la pagina Portfolio (prima pagina con il blocco, **non la home**, preferita di primo livello): le pagine figlie `/portfolio/nome/` dipendono da questo.
+
+### Campi del pannello filtrati per visualizzazione
+
+Ogni campo di `fields.json` ha `conditional_logic` secondo la visualizzazione (e la versione): il pannello mostra solo ciò che serve e `EditModal` (`src/engine.jsx`) nasconde le schede senza campi visibili. Categorie: griglie e caroselli usano `stile_categorie` (testo / tab sotto / tab sopra / nessuna); **slider e anteprima con video** usano `stile_categorie_ov` (Tab / Testo / Nessuna, sempre sopra l'immagine; se non scelto si ricava dal vecchio campo). Nuovo campo = condizioni per ogni visualizzazione a cui si applica.
+
+### Formattazione uguale in ogni pagina
+
+In `render.php` un valore uguale al **predefinito generico** del campo (`cliente_dimensione` small, `riassunto_dimensione` title-5, `cliente_tag` p, `riassunto_tag` h2), anche se salvato dall'editor, conta come "non scelto" e prende il predefinito della visualizzazione (`$starter_chosen()`): slider → nome `display`, riassunto H5; anteprima con video → nome title-5, riassunto small, span e H3; pannello → small. Così lo stesso blocco ha lo stesso aspetto in qualunque pagina (anche in Home). Il test sulle pagine già salvate va fatto confrontando i valori salvati con quelli delle pagine di prova.
 
 ## Stile delle card (logo o classica)
 
@@ -58,7 +87,7 @@ Voce **Clona** nelle azioni di riga (dopo Visualizza) di pagine, articoli e CPT:
 
 ## Menu e pagine di prova
 
-Menu principale: voce **Portfolio** (link `#`, non cliccabile) con sottovoci Classica (la pagina Portfolio), Masonry, A blocchi, Sfalsata, ciascuna con più pagine figlie che combinano layout, filtri e transizioni diverse (le pagine figlie hanno slug `portfolio/<nome>`; il filtro `request` gestisce pagina `/portfolio/` e figli insieme al CPT). Contenuti di prova: `starter_portfolio_demo()` (Strumenti → Contenuti di prova): 9 progetti con titolo = nome del cliente, riassunto, testo sotto il titolo e categorie.
+Menu principale: voce **Portfolio** (link `#`, non cliccabile) con sottovoci (gruppi): Classica (la pagina Portfolio), Masonry, A blocchi (anche *2 affiancate e 1 grande*), Sfalsata, Elenco (anche *Immagine nel nome*), **Slider** (card sovrapposte, schermo intero, schermo intero orizzontale, con pannello e frecce), **Carosello** (classico, animato, scorre con la pagina), **Anteprima con video**; ciascuna con pagine figlie che combinano visualizzazione, filtri e transizioni (slug `portfolio/<nome>`; il filtro `request` gestisce pagina `/portfolio/` e figli insieme al CPT). Contenuti di prova: `starter_portfolio_demo()` (Strumenti → Contenuti di prova): 9 progetti con titolo = nome del cliente, riassunto, testo sotto il titolo e categorie.
 
 ## Come si verifica (fatto prima di ogni messa online)
 
