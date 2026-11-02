@@ -12,7 +12,7 @@ Questa skill dice **come è fatto**, **dove si lavora** e **le regole da non rom
 | File | Quando leggerlo |
 |---|---|
 | `references/architettura.md` | Mappa dei file del tema, funzioni chiave, bucket CSS, variabili CSS |
-| `references/opzioni.md` | Struttura del Customizer e come aggiungere un'opzione |
+| `references/opzioni.md` | Struttura del Customizer, come aggiungere un'opzione, footer a zone (componenti) |
 | `references/portfolio.md` | Modulo Portfolio: scheda progetto, correlati, blocco Elenco progetti, animazione logo, transizioni e caricamento, Clona, Starter Live |
 | `references/blocchi.md` | Blocchi disponibili (plugin Starter Blocks), campi, come crearne uno nuovo, regole SEO dei titoli |
 | `references/regole-e-css.md` | Regole di stile (font, colori, animazioni, responsive), trappole CSS già incontrate |

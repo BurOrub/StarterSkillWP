@@ -28,7 +28,8 @@ starter-theme/
 │   ├── icons-data/           Libreria generata da tools/build-icons.js: ~1.900 icone Lucide (ISC) a blocchi per lettera + 90 loghi (Simple Icons CC0 + LinkedIn, Amazon, Slack, Skype da Bootstrap Icons MIT; "brand-nome") + index.json (ricerca IT/EN)
 │   ├── header.php            Opzioni e markup condiviso dell'header (stile icone, ordine, logo allo scroll, WPML)
 │   ├── search.php            Ricerca nell'header (REST /wp-json/starter/v1/search + pannello)
-│   ├── menu.php              Pulsanti dei sottomenu, titoli colonne footer
+│   ├── menu.php              Pulsanti dei sottomenu, titoli colonne footer, blocco form del footer
+│   ├── footer-builder.php    Costruttore del footer: componenti, zone per stile, default, render, sanitizzazione, controllo Personalizza
 │   ├── blog.php              Opzioni blog, meta, aside, autore, correlati
 │   ├── breadcrumbs.php       Briciole (Yoast se presente), stile inline o barra
 │   ├── customizer-extra.php  Opzioni Header/Generale/Shop/Blog/Footer 4
@@ -53,6 +54,7 @@ starter-theme/
 - `starter_colors_css()`, `starter_typography_css()`, `starter_typography_style_css()` generano il CSS delle opzioni Colori, Tipografia e Stile testi (inline sul foglio del tema). Lo stesso CSS è passato **anche all'editor** con il filtro `block_editor_settings_all`.
 - `starter_body_class_has_hero()` aggiunge `has-hero` (header trasparente sopra la hero) se la pagina inizia con una hero.
 - `starter_footer_style_choices()`: per aggiungere un footer basta una voce e un file `footer-style-N.php`.
+- **Footer a zone** (`inc/footer-builder.php`): ogni stile stampa le sue zone con `starter_footer_slots_html( $stile, [ 'a', 'b' => 'classe' ] )` (ogni zona con contenuto diventa `.footer-slot--{id}`); i componenti sono in `starter_footer_components()` (+ `case` in `starter_footer_render_component()`), le zone in `starter_footer_style_slots()`, il contenuto di partenza in `starter_footer_default_layout()` (ricavato dai vecchi campi, così i siti esistenti non cambiano). Si salvano solo le zone modificate nel theme mod JSON `starter_footer_builder`. Un footer del figlio con le sue zone usa il filtro `starter_footer_style_slots`. CSS: `.footer-slot*` in `CSS/starter.css`; regola da ricordare: dentro una zona (flex in colonna) un `flex-basis` diventa un'altezza, per questo `.footer-slot > * { flex: none }`. Pannello: `JS/footer-builder-control.js`; anteprima: `JS/footer-builder-preview.js`.
 - `starter_has_woocommerce()`, `starter_needs_shop_css()`.
 
 ## Bucket CSS (`tools/build.js`)

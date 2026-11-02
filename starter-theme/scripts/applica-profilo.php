@@ -84,6 +84,13 @@ $check = static function ( $id, $value ) use ( $manager, $controls_by_setting ) 
 		case 'url':
 			return array( esc_url_raw( (string) $value ) );
 
+		case 'starter_footer_builder':
+			// Costruttore del footer: oggetto {stile: {zona: [componenti]}} o testo JSON; lo ripulisce starter_footer_sanitize_builder().
+			$json = is_string( $value ) ? $value : wp_json_encode( $value );
+			$json = starter_footer_sanitize_builder( $json );
+
+			return '' === $json ? null : array( $json );
+
 		case 'color':
 			return preg_match( '/^#[0-9a-fA-F]{3,8}$/', (string) $value ) ? array( (string) $value ) : null;
 
